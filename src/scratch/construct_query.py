@@ -1,3 +1,5 @@
+from impala.dbapi import connect
+
 def construct_insert_query(table_name, columns):
     """Construct an INSERT query based on table name and column names."""
     # Dynamically create column and placeholder strings
@@ -6,8 +8,6 @@ def construct_insert_query(table_name, columns):
     query = f"INSERT INTO {table_name} ({columns_str}) VALUES ({placeholders_str})"
     return query
 
-
-    from impala.dbapi import connect
 
 def get_kudu_table_schema(impala_host, impala_port, kudu_table_name):
     # Connect to Impala
