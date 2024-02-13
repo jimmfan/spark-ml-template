@@ -5,3 +5,25 @@ def construct_insert_query(table_name, columns):
     placeholders_str = ', '.join(['%s'] * len(columns))  # Placeholder for each column
     query = f"INSERT INTO {table_name} ({columns_str}) VALUES ({placeholders_str})"
     return query
+
+
+    from impala.dbapi import connect
+
+def get_kudu_table_schema(impala_host, impala_port, kudu_table_name):
+    # Connect to Impala
+    conn = connect(host=impala_host, port=impala_port)
+    cursor = conn.cursor()
+
+    # Execute DESCRIBE statement
+    cursor.execute(f'DESCRIBE {kudu_table_name}')
+
+    # Fetch and print column names and data types
+    columns = cursor.fetchall()
+
+    table_schema = {
+         col[0]: col[1] for col in columns
+    }
+    conn.close()
+
+    return table_schema
+
